@@ -1,0 +1,37 @@
+import java.net.InetAddress;
+apply plugin: 'java'
+
+repositories{
+   mavenLocal()
+}
+
+dependencies {
+   compile 'io.vertx:vertx-examples:3.3.2'
+   compile 'io.vertx:vertx-core:3.2.1'
+   compile 'io.vertx:vertx-web:3.2.1'
+   compile 'io.netty:netty-all:4.0.36.Final'
+}
+
+task client(type: JavaExec) {
+   classpath = sourceSets.main.runtimeClasspath
+   main 'io.vertx.perf.web.client.HttpClient'
+   systemProperties['vertx.host']=InetAddress.getLocalHost().getHostName();
+   systemProperties['vertx.form']='/blockingform';
+}
+
+task blocking(type: JavaExec) {
+   classpath = sourceSets.main.runtimeClasspath
+   main 'io.vertx.perf.web.client.HttpClient'
+   systemProperties['vertx.host']=InetAddress.getLocalHost().getHostName();
+   systemProperties['vertx.form']='/blockingform';
+}
+
+task nonblocking(type: JavaExec) {
+   classpath = sourceSets.main.runtimeClasspath
+   main 'io.vertx.perf.web.client.HttpClient'
+   systemProperties['vertx.host']=InetAddress.getLocalHost().getHostName();
+   systemProperties['vertx.form']='/nonblockingform';
+   //jvmArgs '-agentlib:jdwp=transport=dt_socket,address=burtha-f24:5006,server=y,suspend=y'
+}
+
+
